@@ -1,5 +1,5 @@
 import IHubResponse from './IHubResponse';
-import IFlattenedJws from './IFlattenedJws';
+import IFlattenedJws from '../commits/IFlattenedJws';
 
 /**
  * Represents a Hub's response to a `CommitQueryRequest`.

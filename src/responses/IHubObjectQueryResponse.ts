@@ -1,5 +1,5 @@
 import IHubResponse from './IHubResponse';
-import IObjectMetadata from './IObjectMetadata';
+import IObjectMetadata from '../objects/IObjectMetadata';
 
 /**
  * Represents a Hub's response to an `ObjectQueryRequest`.

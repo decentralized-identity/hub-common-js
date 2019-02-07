@@ -1,4 +1,4 @@
-import HubErrorCode from '../enums/HubErrorCode';
+import HubErrorCode from './HubErrorCode';
 
 /**
  * Defines the shape of an error returned by an Identity Hub.
