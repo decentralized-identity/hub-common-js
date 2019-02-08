@@ -23,5 +23,8 @@
     "url": "https://github.com/decentralized-identity/hub-common-js/issues"
   },
   "homepage": "https://github.com/decentralized-identity/hub-common-js#readme",
-  "types": "./dist/src/index.d.ts"
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "dist/src/**/*"
+  ]
 }
