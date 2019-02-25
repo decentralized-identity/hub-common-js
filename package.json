@@ -11,7 +11,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --fix --project ."
+    "lint": "tslint --fix --project .",
+    "check-lint": "tslint --project ."
   },
   "repository": {
     "type": "git",
