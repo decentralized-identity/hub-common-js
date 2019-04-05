@@ -8,6 +8,11 @@ export { default as ICommitProtectedHeaders } from './commits/ICommitProtectedHe
 export { default as ICommitUnprotectedHeaders } from './commits/ICommitUnprotectedHeaders';
 export { default as IFlattenedJws } from './commits/IFlattenedJws';
 
+// Commit Strategies
+export { default as ICommitStrategy } from './commitStrategy/ICommitStrategy';
+export { default as BasicCommitStrategy, BASIC_COMMIT_STRATEGY } from './commitStrategy/BasicCommitStrategy';
+export { default as LastWriterWinsCommitStrategy, LAST_WRITER_WINS_COMMIT_STRATEGY } from './commitStrategy/LastWriterWinsCommitStrategy';
+
 // Objects
 export { default as IObjectMetadata } from './objects/IObjectMetadata';
 
