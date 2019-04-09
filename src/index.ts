@@ -7,6 +7,7 @@ export { default as CommitOperation } from './commits/CommitOperation';
 export { default as ICommitProtectedHeaders } from './commits/ICommitProtectedHeaders';
 export { default as ICommitUnprotectedHeaders } from './commits/ICommitUnprotectedHeaders';
 export { default as IFlattenedJws } from './commits/IFlattenedJws';
+import TestCommit from './commits/TestCommit';
 
 // Commit Strategies
 export { default as CommitStrategy } from './commitStrategy/CommitStrategy';
@@ -28,3 +29,8 @@ export { default as IHubObjectQueryOptions } from './requests/IHubObjectQueryOpt
 export { default as IHubObjectQueryResponse } from './responses/IHubObjectQueryResponse';
 export { default as IHubResponse } from './responses/IHubResponse';
 export { default as IHubWriteResponse } from './responses/IHubWriteResponse';
+
+// Unit Test utilities
+export const unitTestExports = {
+  TestCommit,
+};
