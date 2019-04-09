@@ -1,5 +1,5 @@
-import ICommitStrategy from './ICommitStrategy';
-import { IObjectMetadata } from '../index';
+import CommitStrategy from './CommitStrategy';
+import IObjectMetadata from '../objects/IObjectMetadata';
 import Commit from '../commits/Commit';
 import CommitOperation from '../commits/CommitOperation';
 
@@ -8,7 +8,7 @@ export const BASIC_COMMIT_STRATEGY = 'basic';
 /**
  * BasicCommitStrategy implements the 'basic' commit strategy
  */
-export default class BasicCommitStrategy implements ICommitStrategy {
+export default class BasicCommitStrategy extends CommitStrategy {
   resolveObject (objectId: string, commits: Commit[]): {
     /** Resolved object metadata */
     metadata: IObjectMetadata,
@@ -16,9 +16,7 @@ export default class BasicCommitStrategy implements ICommitStrategy {
     data: any;
   } {
     // reduce to only those of the right object
-    const basicCommits = commits.filter((commit) => {
-      return commit.getProtectedHeaders().commit_strategy === BASIC_COMMIT_STRATEGY;
-    });
+    const basicCommits = this.filterCommits(objectId, BASIC_COMMIT_STRATEGY, commits);
     // get the latest commit
     const earliestCommit = BasicCommitStrategy.findEarliestCommit(basicCommits);
     const latestCommit = BasicCommitStrategy.findLatestCommit(basicCommits);

@@ -1,14 +1,14 @@
-import ICommitStrategy from './ICommitStrategy';
+import CommitStrategy from './CommitStrategy';
 import IObjectMetadata from '../objects/IObjectMetadata';
 import Commit from '../commits/Commit';
-import { BasicCommitStrategy } from '../index';
+import BasicCommitStrategy from './BasicCommitStrategy';
 
 export const LAST_WRITER_WINS_COMMIT_STRATEGY = 'lastWriterWins';
 
 /**
  * LastWriterWinsCommitStrategy implements the 'lastWriterWins' commit strategy, based off the 'basic' commit strategy
  */
-export default class LastWriterWinsCommitStrategy implements ICommitStrategy {
+export default class LastWriterWinsCommitStrategy extends CommitStrategy {
   resolveObject (objectId: string, commits: Commit[]): {
     /** Resolved object metadata */
     metadata: IObjectMetadata,
@@ -16,9 +16,7 @@ export default class LastWriterWinsCommitStrategy implements ICommitStrategy {
     data: any;
   } {
     // reduce to only those of the right object
-    const lastWriterWins = commits.filter((commit) => {
-      return commit.getProtectedHeaders().commit_strategy === LAST_WRITER_WINS_COMMIT_STRATEGY;
-    });
+    const lastWriterWins = this.filterCommits(objectId, LAST_WRITER_WINS_COMMIT_STRATEGY, commits);
     // get the latest commit
     const earliestCommit = BasicCommitStrategy.findEarliestCommit(lastWriterWins);
     const latestCommit = BasicCommitStrategy.findLatestCommit(lastWriterWins);
