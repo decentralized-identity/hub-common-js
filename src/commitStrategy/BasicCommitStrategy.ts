@@ -48,27 +48,29 @@ export default class BasicCommitStrategy implements ICommitStrategy {
   static findEarliestCommit(commits: Commit[]): Commit {
     return commits.reduce((earliestCommit, currentCommit) => {
       if (earliestCommit) {
-        // create commits are first, any other commit has higher value
-        if (currentCommit.getProtectedHeaders().operation === CommitOperation.Create &&
-            earliestCommit.getProtectedHeaders().operation !== CommitOperation.Create) {
-          return currentCommit;
-        }
-        // delete commits are last, any other commit has lower value
-        if (currentCommit.getProtectedHeaders().operation !== CommitOperation.Delete &&
-            earliestCommit.getProtectedHeaders().operation === CommitOperation.Delete) {
-          return currentCommit;
-        }
-        // the commit is of the same type and must be decided by datetime
-        const earliestDate = Date.parse(earliestCommit.getHeaders().committed_at);
-        const currentDate = Date.parse(currentCommit.getHeaders().committed_at);
-        // if the commit times are the same, defer to lexigraphical rev order
-        if (earliestDate === currentDate &&
+        if (earliestCommit.getProtectedHeaders().operation === currentCommit.getProtectedHeaders().operation) {
+          // the commit is of the same type and must be decided by datetime
+          const earliestDate = Date.parse(earliestCommit.getHeaders().committed_at);
+          const currentDate = Date.parse(currentCommit.getHeaders().committed_at);
+          // if the commit times are the same, defer to lexigraphical rev order
+          if (earliestDate === currentDate &&
             earliestCommit.getHeaders().rev! > currentCommit.getHeaders().rev!) {
-          return currentCommit;
+            return currentCommit;
+          }
+          // sort by datetime
+          if (earliestDate > currentDate) {
+            return currentCommit;
+          }
+          return earliestCommit;
         }
-        // sort by datetime
-        if (earliestDate > currentDate) {
-          return currentCommit;
+        // we can assume the earliestCommit is NOT whatever the currentCommit is
+        switch (currentCommit.getProtectedHeaders().operation) {
+          case CommitOperation.Create:
+            return currentCommit;
+          case CommitOperation.Update:
+            if (earliestCommit.getProtectedHeaders().operation !== CommitOperation.Create) {
+              return currentCommit;
+            }
         }
         return earliestCommit;
       }
@@ -83,27 +85,29 @@ export default class BasicCommitStrategy implements ICommitStrategy {
   static findLatestCommit(commits: Commit[]): Commit {
     return commits.reduce((latestCommit, currentCommit) => {
       if (latestCommit) {
-        // create commits are first, any other commit has higher value
-        if (latestCommit.getProtectedHeaders().operation === CommitOperation.Create &&
-            currentCommit.getProtectedHeaders().operation !== CommitOperation.Create) {
-          return currentCommit;
+        if (latestCommit.getProtectedHeaders().operation === currentCommit.getProtectedHeaders().operation) {
+          // the commit is of the same type and must be decided by datetime
+          const latestDate = Date.parse(latestCommit.getHeaders().committed_at);
+          const currentDate = Date.parse(currentCommit.getHeaders().committed_at);
+          // if the commit times are the same, defer to lexigraphical rev order
+          if (latestDate === currentDate &&
+              latestCommit.getHeaders().rev! < currentCommit.getHeaders().rev!) {
+            return currentCommit;
+          }
+          // latest datetime wins
+          if (latestDate < currentDate) {
+            return currentCommit;
+          }
+          return latestCommit;
         }
-        // delete commits are last, any other commit has lower value
-        if (latestCommit.getProtectedHeaders().operation !== CommitOperation.Delete &&
-            currentCommit.getProtectedHeaders().operation === CommitOperation.Delete) {
-          return currentCommit;
-        }
-        // the commit is of the same type and must be decided by datetime
-        const latestDate = Date.parse(latestCommit.getHeaders().committed_at);
-        const currentDate = Date.parse(currentCommit.getHeaders().committed_at);
-        // if the commit times are the same, defer to lexigraphical rev order
-        if (latestDate === currentDate &&
-            latestCommit.getHeaders().rev! < currentCommit.getHeaders().rev!) {
-          return currentCommit;
-        }
-        // latest datetime wins
-        if (latestDate < currentDate) {
-          return currentCommit;
+        // we can assume the latestCommit is NOT whatever the currentCommit is
+        switch (currentCommit.getProtectedHeaders().operation) {
+          case CommitOperation.Delete:
+            return currentCommit;
+          case CommitOperation.Update:
+            if (latestCommit.getProtectedHeaders().operation !== CommitOperation.Delete) {
+              return currentCommit;
+            }
         }
         return latestCommit;
       }

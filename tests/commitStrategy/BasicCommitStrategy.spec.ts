@@ -20,30 +20,238 @@ describe('BasicCommitStrategy', () => {
   describe('resolveObject', () => {
     const objectId = `object-id-${Math.round(Math.random() * Number.MAX_SAFE_INTEGER)}`;
     const testCases: [
-      [
         string, // Expected return and why
         Commit[], // commits to feed in
         number, // index of payload
         number, // index of create
-      ]
-    ] = [
-      [
-        'create if none other are defined',
+      ][] = [
         [
-          new TestCommit({
-            protected: {
-              operation: CommitOperation.Create,
-              commit_strategy: BASIC_COMMIT_STRATEGY,
-            },
-            unprotected: {
-              rev: objectId,
-            },
-          }),
+          'create if none other are defined',
+          [
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+          ],
+          0,
+          0,
         ],
-        0,
-        0,
-      ],
-    ];
+        [
+          'update over create',
+          [
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+          ],
+          1,
+          0,
+        ],
+        [
+          'delete over update and create',
+          [
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Delete,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+          ],
+          2,
+          0,
+        ],
+        [
+          'update with static metadata from create',
+          [
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                iss: 'did:test:originalIssuer.id',
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                iss: 'did:test:editorIssuer.id',
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+          ],
+          1,
+          0,
+        ],
+        [
+          'latest update',
+          [
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date().toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+          ],
+          2,
+          1,
+        ],
+        [
+          'update with the greater revision',
+          [
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: 'a',
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: 'b',
+              },
+            }),
+          ],
+          2,
+          0,
+        ],
+        // Tests that should not happen but in the event we have multiple commits
+        [
+          'delete with the earliest create',
+          [
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Delete,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(1000).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Create,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+              },
+              unprotected: {
+                rev: objectId,
+              },
+            }),
+          ],
+          0,
+          3,
+        ],
+      ];
 
     testCases.forEach((testCase) => {
       const [title, commits, payloadIndex, createIndex] = testCase;
