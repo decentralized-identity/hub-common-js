@@ -17,8 +17,7 @@ export default class BasicCommitStrategy implements ICommitStrategy {
   } {
     // reduce to only those of the right object
     const basicCommits = commits.filter((commit) => {
-      return commit.getProtectedHeaders().commit_strategy === BASIC_COMMIT_STRATEGY &&
-        commit.getProtectedHeaders().object_id! === objectId;
+      return commit.getProtectedHeaders().commit_strategy === BASIC_COMMIT_STRATEGY;
     });
     // get the latest commit
     const earliestCommit = BasicCommitStrategy.findEarliestCommit(basicCommits);

@@ -17,8 +17,7 @@ export default class LastWriterWinsCommitStrategy implements ICommitStrategy {
   } {
     // reduce to only those of the right object
     const lastWriterWins = commits.filter((commit) => {
-      return commit.getProtectedHeaders().commit_strategy === LAST_WRITER_WINS_COMMIT_STRATEGY &&
-        commit.getProtectedHeaders().object_id! === objectId;
+      return commit.getProtectedHeaders().commit_strategy === LAST_WRITER_WINS_COMMIT_STRATEGY;
     });
     // get the latest commit
     const earliestCommit = BasicCommitStrategy.findEarliestCommit(lastWriterWins);
