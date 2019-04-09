@@ -57,9 +57,7 @@ describe('BasicCommitStrategy', () => {
               protected: {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
-              },
-              unprotected: {
-                rev: objectId,
+                object_id: objectId,
               },
             }),
           ],
@@ -82,18 +80,14 @@ describe('BasicCommitStrategy', () => {
               protected: {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
-              },
-              unprotected: {
-                rev: objectId,
+                object_id: objectId,
               },
             }),
             new TestCommit({
               protected: {
                 operation: CommitOperation.Delete,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
-              },
-              unprotected: {
-                rev: objectId,
+                object_id: objectId,
               },
             }),
           ],
@@ -119,10 +113,8 @@ describe('BasicCommitStrategy', () => {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
                 iss: 'did:test:editorIssuer.id',
-                committed_at: new Date(0).toString(),
-              },
-              unprotected: {
-                rev: objectId,
+                committed_at: new Date().toString(),
+                object_id: objectId,
               },
             }),
           ],
@@ -137,9 +129,7 @@ describe('BasicCommitStrategy', () => {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
                 committed_at: new Date(0).toString(),
-              },
-              unprotected: {
-                rev: objectId,
+                object_id: objectId,
               },
             }),
             new TestCommit({
@@ -157,9 +147,7 @@ describe('BasicCommitStrategy', () => {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
                 committed_at: new Date().toString(),
-              },
-              unprotected: {
-                rev: objectId,
+                object_id: objectId,
               },
             }),
           ],
@@ -184,6 +172,7 @@ describe('BasicCommitStrategy', () => {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
                 committed_at: new Date(0).toString(),
+                object_id: objectId,
               },
               unprotected: {
                 rev: 'a',
@@ -194,6 +183,7 @@ describe('BasicCommitStrategy', () => {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
                 committed_at: new Date(0).toString(),
+                object_id: objectId,
               },
               unprotected: {
                 rev: 'b',
@@ -212,9 +202,7 @@ describe('BasicCommitStrategy', () => {
                 operation: CommitOperation.Delete,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
                 committed_at: new Date(0).toString(),
-              },
-              unprotected: {
-                rev: objectId,
+                object_id: objectId,
               },
             }),
             new TestCommit({
@@ -222,9 +210,7 @@ describe('BasicCommitStrategy', () => {
                 operation: CommitOperation.Update,
                 commit_strategy: BASIC_COMMIT_STRATEGY,
                 committed_at: new Date(0).toString(),
-              },
-              unprotected: {
-                rev: objectId,
+                object_id: objectId,
               },
             }),
             new TestCommit({
