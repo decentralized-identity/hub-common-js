@@ -212,6 +212,20 @@ describe('BasicCommitStrategy', () => {
                 committed_at: new Date(0).toString(),
                 object_id: objectId,
               },
+              unprotected: {
+                rev: 'b',
+              }
+            }),
+            new TestCommit({
+              protected: {
+                operation: CommitOperation.Update,
+                commit_strategy: BASIC_COMMIT_STRATEGY,
+                committed_at: new Date(0).toString(),
+                object_id: objectId,
+              },
+              unprotected: {
+                rev: 'a',
+              }
             }),
             new TestCommit({
               protected: {
@@ -235,7 +249,7 @@ describe('BasicCommitStrategy', () => {
             }),
           ],
           0,
-          3,
+          4,
         ],
       ];
 
