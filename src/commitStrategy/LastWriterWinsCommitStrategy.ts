@@ -38,7 +38,7 @@ export default class LastWriterWinsCommitStrategy implements ICommitStrategy {
     };
     return {
       metadata,
-      data: latestCommit.getPayload()
+      data: latestCommit.getPayload(),
     };
   }
 }

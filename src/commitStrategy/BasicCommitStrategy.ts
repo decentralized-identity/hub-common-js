@@ -38,10 +38,14 @@ export default class BasicCommitStrategy implements ICommitStrategy {
     };
     return {
       metadata,
-      data: latestCommit.getPayload()
+      data: latestCommit.getPayload(),
     };
   }
 
+  /**
+   * Gets the earliest logical commit
+   * @param commits All commits to search through
+   */
   static findEarliestCommit(commits: Commit[]): Commit {
     return commits.reduce((earliestCommit, currentCommit) => {
       if (earliestCommit) {
@@ -73,6 +77,10 @@ export default class BasicCommitStrategy implements ICommitStrategy {
     });
   }
 
+  /**
+   * Gets the latest logical commit
+   * @param commits All commits to search through
+   */
   static findLatestCommit(commits: Commit[]): Commit {
     return commits.reduce((latestCommit, currentCommit) => {
       if (latestCommit) {

@@ -1,6 +1,9 @@
 import ICommitProtectedHeaders from './ICommitProtectedHeaders';
 import ICommitUnprotectedHeaders from './ICommitUnprotectedHeaders';
 
+/**
+ * Represents a single commit
+ */
 export default abstract class Commit {
 
   /**
