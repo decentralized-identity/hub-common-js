@@ -1,11 +1,15 @@
-import CommitStrategy from "../../src/commitStrategy/CommitStrategy";
-import Commit from "../../src/commits/Commit";
-import IObjectMetadata from "../../src/objects/IObjectMetadata";
-import TestCommit from "../../src/commits/TestCommit";
-import CommitOperation from "../../src/commits/CommitOperation";
+import CommitStrategy from '../../src/commitStrategy/CommitStrategy';
+import Commit from '../../src/commits/Commit';
+import IObjectMetadata from '../../src/objects/IObjectMetadata';
+import TestCommit from '../../src/commits/TestCommit';
+import CommitOperation from '../../src/commits/CommitOperation';
 
 class TestCommitStrategy extends CommitStrategy {
-  resolveObject(_: string, __: Commit[]): { metadata: IObjectMetadata; data: any; } {
+  resolveObject(_: string, __: Commit[]): {
+    /** metadata */
+    metadata: IObjectMetadata,
+    /** payload data */
+    data: any} {
     throw new Error('An appropriate spy must be used');
   }
 }
@@ -145,6 +149,6 @@ describe('CommitStrategy', () => {
       const filteredCommits = commitStrategy['filterCommits'](objectId, strategy!, commits);
       expect(filteredCommits.length).toEqual(1);
       expect(filteredCommits).toContain(commits[0]);
-    })
+    });
   });
 });

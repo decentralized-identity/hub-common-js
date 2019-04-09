@@ -214,7 +214,7 @@ describe('BasicCommitStrategy', () => {
               },
               unprotected: {
                 rev: 'b',
-              }
+              },
             }),
             new TestCommit({
               protected: {
@@ -225,7 +225,7 @@ describe('BasicCommitStrategy', () => {
               },
               unprotected: {
                 rev: 'a',
-              }
+              },
             }),
             new TestCommit({
               protected: {
