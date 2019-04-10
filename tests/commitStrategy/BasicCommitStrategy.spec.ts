@@ -205,7 +205,7 @@ describe('BasicCommitStrategy', () => {
       });
     });
 
-    it('should return empty values when missing the create commit', () => {
+    it('should throw when missing the create commit', () => {
       const objectId = 'testNoCreate';
       const commits = [
         new TestCommit({
@@ -217,12 +217,12 @@ describe('BasicCommitStrategy', () => {
           },
         }),
       ];
-      const actual = commitStrategy.resolveObject(objectId, commits);
-      expect(actual.metadata.created_by).toEqual('');
-      expect(actual.metadata.created_at).toEqual('');
-      expect(actual.metadata.id).toEqual(objectId);
-      expect(actual.metadata.meta).toEqual(commits[0].getHeaders().meta);
-      expect(actual.data).toEqual(commits[0].getPayload());
+      try {
+        commitStrategy.resolveObject(objectId, commits);
+        fail('expected to throw');
+      } catch (error) {
+        expect(error.message).toContain('missing create commit');
+      }
     });
   });
 });

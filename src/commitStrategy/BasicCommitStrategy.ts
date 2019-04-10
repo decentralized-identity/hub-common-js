@@ -20,15 +20,11 @@ export default class BasicCommitStrategy extends CommitStrategy {
     // get the latest commit
     const latestCommit = BasicCommitStrategy.findLatestCommit(basicCommits);
     const earliestCommit = BasicCommitStrategy.findCreateCommit(objectId, basicCommits);
+    if (!earliestCommit) {
+      throw new Error('Cannot construct object: missing create commit');
+    }
     const latestMeta = latestCommit.getHeaders();
-    const staticMetadata = earliestCommit ? earliestCommit.getHeaders() : {
-      interface: latestMeta.interface,
-      context: latestMeta.context,
-      type: latestMeta.type,
-      iss: '',
-      committed_at: '',
-      sub: latestMeta.sub,
-    };
+    const staticMetadata = earliestCommit.getHeaders();
     const metadata: IObjectMetadata = {
       interface: staticMetadata.interface,
       context: staticMetadata.context,

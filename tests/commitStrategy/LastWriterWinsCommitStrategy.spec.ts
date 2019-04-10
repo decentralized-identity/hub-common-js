@@ -126,5 +126,25 @@ describe('LastWriterWinsCommitStrategy', () => {
         expect(actual.data).toEqual(payload);
       });
     });
+
+    it('should throw when missing the create commit', () => {
+      const objectId = 'testNoCreate';
+      const commits = [
+        new TestCommit({
+          protected: {
+            operation: CommitOperation.Update,
+            commit_strategy: LAST_WRITER_WINS_COMMIT_STRATEGY,
+            committed_at: new Date().toString(),
+            object_id: objectId,
+          },
+        }),
+      ];
+      try {
+        commitStrategy.resolveObject(objectId, commits);
+        fail('expected to throw');
+      } catch (error) {
+        expect(error.message).toContain('missing create commit');
+      }
+    });
   });
 });
