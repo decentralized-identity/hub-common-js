@@ -6,14 +6,9 @@ import Commit from '../../src/commits/Commit';
 describe('BasicCommitStrategy', () => {
   const commitStrategy = new BasicCommitStrategy();
 
-  describe('findEarliestCommit', () => {
-    it('should throw if not given commits', () => {
-      try {
-        BasicCommitStrategy.findEarliestCommit([]);
-        fail('expected to throw');
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
+  describe('findCreateCommit', () => {
+    it('should return undefined if no commits are given', () => {
+      expect(BasicCommitStrategy.findCreateCommit('', [])).toBeUndefined();
     });
   });
 
@@ -193,64 +188,6 @@ describe('BasicCommitStrategy', () => {
           2,
           0,
         ],
-        // Tests that should not happen but in the event we have multiple commits
-        [
-          'delete with the earliest create',
-          [
-            new TestCommit({
-              protected: {
-                operation: CommitOperation.Delete,
-                commit_strategy: BASIC_COMMIT_STRATEGY,
-                committed_at: new Date(0).toString(),
-                object_id: objectId,
-              },
-            }),
-            new TestCommit({
-              protected: {
-                operation: CommitOperation.Update,
-                commit_strategy: BASIC_COMMIT_STRATEGY,
-                committed_at: new Date(0).toString(),
-                object_id: objectId,
-              },
-              unprotected: {
-                rev: 'b',
-              },
-            }),
-            new TestCommit({
-              protected: {
-                operation: CommitOperation.Update,
-                commit_strategy: BASIC_COMMIT_STRATEGY,
-                committed_at: new Date(0).toString(),
-                object_id: objectId,
-              },
-              unprotected: {
-                rev: 'a',
-              },
-            }),
-            new TestCommit({
-              protected: {
-                operation: CommitOperation.Create,
-                commit_strategy: BASIC_COMMIT_STRATEGY,
-                committed_at: new Date(1000).toString(),
-              },
-              unprotected: {
-                rev: objectId,
-              },
-            }),
-            new TestCommit({
-              protected: {
-                operation: CommitOperation.Create,
-                commit_strategy: BASIC_COMMIT_STRATEGY,
-                committed_at: new Date(0).toString(),
-              },
-              unprotected: {
-                rev: objectId,
-              },
-            }),
-          ],
-          0,
-          4,
-        ],
       ];
 
     testCases.forEach((testCase) => {
@@ -266,6 +203,26 @@ describe('BasicCommitStrategy', () => {
         expect(actual.metadata.meta).toEqual(meta);
         expect(actual.data).toEqual(payload);
       });
+    });
+
+    it('should return empty values when missing the create commit', () => {
+      const objectId = 'testNoCreate';
+      const commits = [
+        new TestCommit({
+          protected: {
+            operation: CommitOperation.Update,
+            commit_strategy: BASIC_COMMIT_STRATEGY,
+            committed_at: new Date().toString(),
+            object_id: objectId,
+          },
+        }),
+      ];
+      const actual = commitStrategy.resolveObject(objectId, commits);
+      expect(actual.metadata.created_by).toEqual('');
+      expect(actual.metadata.created_at).toEqual('');
+      expect(actual.metadata.id).toEqual(objectId);
+      expect(actual.metadata.meta).toEqual(commits[0].getHeaders().meta);
+      expect(actual.data).toEqual(commits[0].getPayload());
     });
   });
 });

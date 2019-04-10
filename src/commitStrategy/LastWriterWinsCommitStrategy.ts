@@ -18,18 +18,25 @@ export default class LastWriterWinsCommitStrategy extends CommitStrategy {
     // reduce to only those of the right object
     const lastWriterWins = this.filterCommits(objectId, LAST_WRITER_WINS_COMMIT_STRATEGY, commits);
     // get the latest commit
-    const earliestCommit = BasicCommitStrategy.findEarliestCommit(lastWriterWins);
     const latestCommit = BasicCommitStrategy.findLatestCommit(lastWriterWins);
-    const earliestMeta = earliestCommit.getHeaders();
+    const earliestCommit = BasicCommitStrategy.findCreateCommit(objectId, lastWriterWins);
     const latestMeta = latestCommit.getHeaders();
+    const staticMetadata = earliestCommit ? earliestCommit.getHeaders() : {
+      interface: latestMeta.interface,
+      context: latestMeta.context,
+      type: latestMeta.type,
+      iss: '',
+      committed_at: '',
+      sub: latestMeta.sub,
+    };
     const metadata: IObjectMetadata = {
-      interface: earliestMeta.interface,
-      context: earliestMeta.context,
-      type: earliestMeta.type,
+      interface: staticMetadata.interface,
+      context: staticMetadata.context,
+      type: staticMetadata.type,
       id: objectId,
-      created_by: earliestMeta.iss,
-      created_at: earliestMeta.committed_at,
-      sub: earliestMeta.sub,
+      created_by: staticMetadata.iss,
+      created_at: staticMetadata.committed_at,
+      sub: staticMetadata.sub,
       commit_strategy: LAST_WRITER_WINS_COMMIT_STRATEGY,
       meta: latestMeta.meta,
     };
