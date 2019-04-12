@@ -5,14 +5,40 @@
   "main": "./dist/src/index.js",
   "dependencies": {},
   "devDependencies": {
+    "@types/jasmine": "^3.3.12",
+    "@types/node": "^11.13.2",
+    "jasmine": "^3.4.0",
+    "jasmine-reporters": "^2.3.2",
+    "jasmine-ts": "^0.3.0",
+    "nyc": "^13.3.0",
+    "source-map-support": "^0.5.12",
+    "ts-node": "^8.0.3",
     "tslint": "5.12.1",
     "tslint-config-airbnb": "5.11.1",
     "typescript": "3.3.1"
   },
   "scripts": {
     "build": "tsc",
+    "test": "nyc jasmine-ts --config=./tests/jasmine.json",
     "lint": "tslint --fix --project .",
     "check-lint": "tslint --project ."
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "include": [
+      "src/**"
+    ],
+    "reporter": [
+      "text",
+      "cobertura",
+      "html"
+    ]
   },
   "repository": {
     "type": "git",
