@@ -4,20 +4,20 @@ import ICommitUnprotectedHeaders from './ICommitUnprotectedHeaders';
 /**
  * Represents a single commit
  */
-export default abstract class Commit {
+export default interface Commit {
 
   /**
    * Gets the combined headers for this commit
    */
-  abstract getHeaders(): ICommitProtectedHeaders & ICommitUnprotectedHeaders;
+  getHeaders(): ICommitProtectedHeaders & ICommitUnprotectedHeaders;
 
   /**
    * Gets the protected headers
    */
-  abstract getProtectedHeaders(): Partial<ICommitProtectedHeaders>;
+  getProtectedHeaders(): Partial<ICommitProtectedHeaders>;
 
   /**
    * Gets the payload
    */
-  abstract getPayload(): any;
+  getPayload(): any;
 }
