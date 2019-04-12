@@ -1,6 +1,6 @@
 {
   "name": "@decentralized-identity/hub-common-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Common interfaces for interacting with Identity Hubs in JS/TS",
   "main": "./dist/src/index.js",
   "dependencies": {},
