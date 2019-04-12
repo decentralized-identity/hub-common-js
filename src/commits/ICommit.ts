@@ -4,7 +4,7 @@ import ICommitUnprotectedHeaders from './ICommitUnprotectedHeaders';
 /**
  * Represents a single commit
  */
-export default interface Commit {
+export default interface ICommit {
 
   /**
    * Gets the combined headers for this commit

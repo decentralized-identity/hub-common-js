@@ -1,6 +1,6 @@
 import CommitStrategy from './CommitStrategy';
 import IObjectMetadata from '../objects/IObjectMetadata';
-import Commit from '../commits/Commit';
+import ICommit from '../commits/ICommit';
 import BasicCommitStrategy from './BasicCommitStrategy';
 
 export const LAST_WRITER_WINS_COMMIT_STRATEGY = 'lastWriterWins';
@@ -9,7 +9,7 @@ export const LAST_WRITER_WINS_COMMIT_STRATEGY = 'lastWriterWins';
  * LastWriterWinsCommitStrategy implements the 'lastWriterWins' commit strategy, based off the 'basic' commit strategy
  */
 export default class LastWriterWinsCommitStrategy extends CommitStrategy {
-  resolveObject (objectId: string, commits: Commit[]): {
+  resolveObject (objectId: string, commits: ICommit[]): {
     /** Resolved object metadata */
     metadata: IObjectMetadata,
     /** Resolved object data */

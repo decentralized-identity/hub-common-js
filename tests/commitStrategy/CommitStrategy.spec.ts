@@ -1,11 +1,11 @@
 import CommitStrategy from '../../src/commitStrategy/CommitStrategy';
-import Commit from '../../src/commits/Commit';
+import ICommit from '../../src/commits/ICommit';
 import IObjectMetadata from '../../src/objects/IObjectMetadata';
 import TestCommit from '../../src/commits/TestCommit';
 import CommitOperation from '../../src/commits/CommitOperation';
 
 class TestCommitStrategy extends CommitStrategy {
-  resolveObject(_: string, __: Commit[]): {
+  resolveObject(_: string, __: ICommit[]): {
     /** metadata */
     metadata: IObjectMetadata,
     /** payload data */

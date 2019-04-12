@@ -1,5 +1,5 @@
 import IObjectMetadata from '../objects/IObjectMetadata';
-import Commit from '../commits/Commit';
+import ICommit from '../commits/ICommit';
 import CommitOperation from '../commits/CommitOperation';
 
 /**
@@ -12,7 +12,7 @@ export default abstract class CommitStrategy {
    * @param commits All corresponding commits to use in the reconstruction
    * @returns The final state of the object according to the commit strategy in terms of metadata and data
    */
-  abstract resolveObject (objectId: string, commits: Commit[]): {
+  abstract resolveObject (objectId: string, commits: ICommit[]): {
     /** Resolved object metadata */
     metadata: IObjectMetadata,
     /** Resolved object data */
@@ -26,7 +26,7 @@ export default abstract class CommitStrategy {
    * @param commits Commits to filter
    * @returns filtered commits
    */
-  protected filterCommits(objectId: string, commitStrategy: string, commits: Commit[]): Commit[] {
+  protected filterCommits(objectId: string, commitStrategy: string, commits: ICommit[]): ICommit[] {
     return commits.filter((commit) => {
       const headers = commit.getProtectedHeaders();
       if (headers.commit_strategy !== commitStrategy) {

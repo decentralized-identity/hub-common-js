@@ -1,4 +1,4 @@
-import Commit from './Commit';
+import ICommit from './ICommit';
 import ICommitUnprotectedHeaders from './ICommitUnprotectedHeaders';
 import ICommitProtectedHeaders from './ICommitProtectedHeaders';
 import CommitOperation from './CommitOperation';
@@ -6,7 +6,7 @@ import CommitOperation from './CommitOperation';
 /**
  * Simple Commit implementation to be used in unit tests
  */
-export default class TestCommit implements Commit {
+export default class TestCommit implements ICommit {
 
   /** unprotected headers */
   private unprotected: ICommitUnprotectedHeaders;

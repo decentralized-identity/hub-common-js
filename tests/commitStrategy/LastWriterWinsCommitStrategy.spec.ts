@@ -1,7 +1,7 @@
 import LastWriterWinsCommitStrategy, { LAST_WRITER_WINS_COMMIT_STRATEGY } from '../../src/commitStrategy/LastWriterWinsCommitStrategy';
 import TestCommit from '../../src/commits/TestCommit';
 import CommitOperation from '../../src/commits/CommitOperation';
-import Commit from '../../src/commits/Commit';
+import ICommit from '../../src/commits/ICommit';
 
 describe('LastWriterWinsCommitStrategy', () => {
   const commitStrategy = new LastWriterWinsCommitStrategy();
@@ -10,7 +10,7 @@ describe('LastWriterWinsCommitStrategy', () => {
     const objectId = `object-id-${Math.round(Math.random() * Number.MAX_SAFE_INTEGER)}`;
     const testCases: [
         string, // Expected return and why
-        Commit[], // commits to feed in
+        ICommit[], // commits to feed in
         number, // index of payload
         number, // index of create
       ][] = [

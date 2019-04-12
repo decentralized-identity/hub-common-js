@@ -1,6 +1,6 @@
 import CommitStrategy from './CommitStrategy';
 import IObjectMetadata from '../objects/IObjectMetadata';
-import Commit from '../commits/Commit';
+import ICommit from '../commits/ICommit';
 import CommitOperation from '../commits/CommitOperation';
 
 export const BASIC_COMMIT_STRATEGY = 'basic';
@@ -9,7 +9,7 @@ export const BASIC_COMMIT_STRATEGY = 'basic';
  * BasicCommitStrategy implements the 'basic' commit strategy
  */
 export default class BasicCommitStrategy extends CommitStrategy {
-  resolveObject (objectId: string, commits: Commit[]): {
+  resolveObject (objectId: string, commits: ICommit[]): {
     /** Resolved object metadata */
     metadata: IObjectMetadata,
     /** Resolved object data */
@@ -46,7 +46,7 @@ export default class BasicCommitStrategy extends CommitStrategy {
    * Gets the correct create commit given the objectId
    * @param commits All commits to search through
    */
-  static findCreateCommit(objectId: string, commits: Commit[]): Commit | undefined {
+  static findCreateCommit(objectId: string, commits: ICommit[]): ICommit | undefined {
     const possibleCreates = commits.filter((commit) => {
       const commitRev = commit.getHeaders().rev;
       return commit.getProtectedHeaders().operation === CommitOperation.Create &&
@@ -59,7 +59,7 @@ export default class BasicCommitStrategy extends CommitStrategy {
    * Gets the latest logical commit
    * @param commits All commits to search through
    */
-  static findLatestCommit(commits: Commit[]): Commit {
+  static findLatestCommit(commits: ICommit[]): ICommit {
     return commits.reduce((latestCommit, currentCommit) => {
       if (latestCommit) {
         if (latestCommit.getProtectedHeaders().operation === currentCommit.getProtectedHeaders().operation) {
